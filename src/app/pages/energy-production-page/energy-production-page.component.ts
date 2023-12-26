@@ -78,19 +78,7 @@ export class EnergyProductionPageComponent implements AfterViewInit{
               }
             },
           },
-          // tooltip: {
-          //   callbacks: {
-          //     label: function(context) {
-          //       const label = data.labels[context.dataIndex];
-          //       const value = context.formattedValue;
-          //       const dataset = context.dataset;
-          //       const total = dataset.data.reduce((acc, currentValue) => acc + currentValue, 0);
-          //       const currentValue = dataset.data[context.dataIndex];
-          //       const percentage = Math.round((currentValue / total) * 100);
-          //       return `${label}: ${value} ( ${percentage}% )`;
-          //     }
-          //   }
-          // }
+
           tooltip: {
             callbacks: {
               label: function(context) {
