@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+    height: 100%;
+    background-color: #221E27; 
+}
+
+*{
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+}
+
+a, a:hover{
+  text-decoration: none;
+  color: rgb(156,156,156);
+}
+
+.mat-drawer-container {
+  background-color: #221E27;
+}

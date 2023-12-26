@@ -1,0 +1,43 @@
+<div class="sidebar">
+    <div class="top">
+        <a routerLink="/"><span class="logo">eWolt</span></a>
+        <!-- <a routerLink="/"><img src="./assets/logo.png" class="logo"></a> -->
+    </div>
+
+    <div class="center">
+        <div class="navbar-content">
+        
+            <p class="title">Energy Graphs</p>
+
+            <a routerLink="/">
+                <li>
+                    <mat-icon>auto_graph</mat-icon>
+                    <span>Real time data</span>
+                </li>
+            </a>
+
+            <a routerLink="/energy-forecast">
+                <li>
+                    <mat-icon>query_stats</mat-icon>
+                    <span>Energy Forecast</span>
+                </li>
+            </a>
+
+            <a routerLink="/energy-report">
+                <li>
+                    <mat-icon>pie_chart</mat-icon>
+                    <span>Energy Report</span>
+                </li>
+            </a>
+
+        </div>
+
+        <div class="navbar-about">
+            <p class="title">About</p>
+            <li (click)="openPDF()">
+                <mat-icon>help</mat-icon>
+                <span>Help</span>
+            </li>
+        </div>
+    </div>
+</div>

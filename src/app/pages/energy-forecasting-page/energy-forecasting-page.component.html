@@ -1,0 +1,17 @@
+<div class="energy-forecasting-page-container">
+
+    <div class="date-dropdown">
+        <select [(ngModel)]="selectedDate" (change)="onDateChange($event)">
+          <option *ngFor="let date of dateOptions" [value]="date" [selected]="date === selectedDate">{{ date }}</option>
+        </select>
+    </div>
+
+    <div id="chart3-container">
+        <canvas #chart3></canvas>
+    </div>
+
+    <div id="chart4-container">
+        <canvas #chart4></canvas>
+    </div>
+    
+</div>

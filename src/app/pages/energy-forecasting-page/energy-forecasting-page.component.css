@@ -1,0 +1,23 @@
+.energy-forecasting-page-container{
+    background-color: #201f1f;
+    color: rgb(156,156,156);
+    height: calc(100vh - 50px);
+    width: 100%;
+    margin-top: 50px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#chart3-container{
+    width: 95%;
+    height: 45%;
+    margin: 10px;
+}
+
+#chart4-container{
+    width: 95%;
+    height: 45%;
+    margin: 10px;
+}
