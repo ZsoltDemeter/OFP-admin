@@ -16,7 +16,7 @@ const httpOptions = {
 })
 
 export class SharedService {
-  public apiUrl = 'http://localhost:3000'
+  public apiUrl = 'http://3.79.231.199:3000/'
   public isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private currentUser: BehaviorSubject<string> = new BehaviorSubject<string>("");
   public currentUser$: Observable<string> = this.currentUser.asObservable();
