@@ -9,4 +9,21 @@
         <canvas #chart2></canvas>
     </div>
 
+
+    <div class="value-boxes-container">
+        <div class="value-box">
+            <p>est. Potential energy for storing</p>
+            <div class="value-red">
+                <span class="value-text">{{ potentialEnergySavedGW }}</span><span class="unit">GW</span>
+            </div>
+        </div>
+
+        <div class="value-box">
+            <p>est. Not sold</p>
+            <div class="value-green">
+                <span>€</span><span class="value-text">{{ potentialDailyRevenue }}</span><span>m</span>
+            </div>
+        </div>
+    </div>
+
 </div>

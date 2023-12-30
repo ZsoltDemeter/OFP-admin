@@ -15,8 +15,18 @@ export class GraphsComponent implements AfterViewInit {
   chart1: any;
   chart2: any;
   energyReport: any;
+  potentialEnergySavedGW: any;
+  potentialDailyRevenue: any;
+  energyPrice: number = 0.2;
+  currentDate: any;
 
-  constructor(public service: SharedService) { }
+  constructor(public service: SharedService) {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
+    const year = today.getFullYear();
+    this.currentDate = `${day}-${month}-${year}`;
+   }
 
   ngAfterViewInit(): void {
 
@@ -35,16 +45,20 @@ export class GraphsComponent implements AfterViewInit {
 
   createChart(): void {
 
-    const filteredEnergyReportObj = this.energyReport.filter(item => item.Data !== '').slice(-96);
+    // const filteredEnergyReportObj = this.energyReport.filter(item => item.Data !== '').slice(-96);
+    const filteredEnergyReportObj = this.energyReport.filter(item => item.Data.includes(this.currentDate));
+    // const filteredEnergyReportObj = this.energyReport.filter(item => item.Data !== '' && item.Data.includes(this.currentDate))
  
     const consumData = filteredEnergyReportObj.map(item => parseInt(item.ConsumMW));
     const productieData = filteredEnergyReportObj.map(item => parseInt(item.ProductieMW));
     const imbalanceData = filteredEnergyReportObj.map((item) => parseInt(item.ProductieMW) - parseInt(item.ConsumMW))
+
+    this.potentialEnergySavedGW = (imbalanceData.reduce((accumulator, currentValue) => accumulator + currentValue, 0)/1000).toFixed(2);
+    this.potentialDailyRevenue = (this.potentialEnergySavedGW * 1 * this.energyPrice).toFixed(2);
     
     filteredEnergyReportObj.forEach(item => {
       item.Data = item.Data.replace(' ora', '');
     });
-    console.log(filteredEnergyReportObj);
 
     const ctx1 = this.chartRef1.nativeElement.getContext('2d');
     const ctx2 = this.chartRef2.nativeElement.getContext('2d');
@@ -84,6 +98,12 @@ export class GraphsComponent implements AfterViewInit {
             time: {
               parser: 'dd-MM-yyyy HH:mm:ss',
               tooltipFormat: 'dd-MM-yyyy HH:mm',
+              displayFormats: {
+                millisecond: 'HH:mm:ss.SSS',
+                second: 'HH:mm:ss',
+                minute: 'HH:mm',
+                hour: 'HH'
+              }
             },
             title: {
               display: false,
@@ -137,6 +157,12 @@ export class GraphsComponent implements AfterViewInit {
             time: {
               parser: 'dd-MM-yyyy HH:mm:ss',
               tooltipFormat: 'dd-MM-yyyy HH:mm',
+              displayFormats: {
+                millisecond: 'HH:mm:ss.SSS',
+                second: 'HH:mm:ss',
+                minute: 'HH:mm',
+                hour: 'HH'
+              }
             },
             title: {
               display: false,
