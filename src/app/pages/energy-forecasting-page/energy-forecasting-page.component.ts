@@ -19,13 +19,6 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
   consumptionForecast: any;
   selectedDate: any;
   dateOptions: string[] = [];
-  // productionData: any;
-  // consumptionData: any;
-  // prodForecastData: any;
-  // consForecastData: any;
-  // filteredEnergyReportObj: any;
-  // filteredProdForecastObj: any;
-  // filteredConsForecastObj: any;
 
   constructor(public service: SharedService) {
     const today = new Date();
@@ -51,25 +44,6 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
         this.productionForecast = responses.production;
         this.consumptionForecast = responses.consumption;
 
-        //Sorting the arrays to be in order
-        // this.productionForecast = responses.production.sort((a, b) => {
-        //   const dateAString = a.Data.replace(' ora', '').replace(/-/g, '/');
-        //   const dateBString = b.Data.replace(' ora', '').replace(/-/g, '/');
-        //   const dateA = new Date(dateAString);
-        //   const dateB = new Date(dateBString);
-
-        //   return dateA.getTime() - dateB.getTime();
-        // });
-
-        // this.consumptionForecast = responses.consumption.sort((a, b) => {
-        //   const dateAString = a.Data.replace(' ora', '').replace(/-/g, '/');
-        //   const dateBString = b.Data.replace(' ora', '').replace(/-/g, '/');
-        //   const dateA = new Date(dateAString);
-        //   const dateB = new Date(dateBString);
-
-        //   return dateA.getTime() - dateB.getTime();
-        // });
-
         console.log("Prod Forecast",this.productionForecast);
         console.log("Cons Forecast",this.consumptionForecast);
 
@@ -82,6 +56,24 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
 
   }
 
+  customSort = (arr) => {
+    const extractDateTime = (str) => {
+      const [dateStr, timeStr] = str.split(' ');
+      const [day, month, year] = dateStr.split('-').map(Number);
+      const [hour, minute] = timeStr.split(':').map(Number);
+      const timestamp = new Date(year, month - 1, day, hour, minute).getTime();
+      return timestamp;
+    };
+  
+    arr.sort((a, b) => {
+      const dateA = extractDateTime(a);
+      const dateB = extractDateTime(b);
+      return dateA - dateB;
+    });
+  
+    return arr;
+  };
+
   createChart(): void {
 
     // const filteredEnergyReportObj = this.energyReport.filter(item => item.Data.includes(this.selectedDate));
@@ -93,7 +85,6 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
     const prodForecastData = filteredProdForecastObj.map((item) => parseInt(item.ProductieMW))
     const consForecastData = filteredConsForecastObj.map((item) => parseInt(item.ConsumMW))
     const imbalanceForecastData = prodForecastData.map((value, index) => value - consForecastData[index])
-
 
     console.log("Filtered prod forecast obj \n",filteredProdForecastObj)
     console.log("Filtered cons forecast obj \n",filteredConsForecastObj)
@@ -112,13 +103,16 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
       item.Data = item.Data.replace(' ora', '');
     });
 
+    const labels = filteredProdForecastObj.map(item => item.Data);
+    const labelsSorted = this.customSort(labels);
+
     const ctx3 = this.chartRef3.nativeElement.getContext('2d');
     const ctx4 = this.chartRef4.nativeElement.getContext('2d');
 
     this.chart3 = new Chart(ctx3, {
       type: 'line',
       data: {
-        labels: filteredProdForecastObj.map(item => item.Data),
+        labels: labelsSorted,
         datasets: [
           {
             label: 'Consumption Forecast',
@@ -176,7 +170,7 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
     this.chart4 = new Chart(ctx4, {
       type: 'line',
       data: {
-        labels: filteredProdForecastObj.map(item => item.Data),
+        labels: labelsSorted,
         datasets: [
           {
             label: 'Imbalance Forecast',
@@ -186,14 +180,6 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
             borderWidth: 1,
             fill: true
           },
-          // {
-          //   label: 'Forecast',
-          //   data: consForecastData,
-          //   backgroundColor: 'rgba(255, 181, 52, 0.1)',
-          //   borderColor: 'rgba(255, 181, 52, 0.8)',
-          //   borderWidth: 1,
-          //   fill: true
-          // },
         ]
       },
       options: {
@@ -203,7 +189,7 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
           x: {
             type: 'time',
             time: {
-              parser: 'dd-MM-yyyy HH:mm:ss',
+              parser: 'dd-MM-yyyy HH:mm',
               tooltipFormat: 'dd-MM-yyyy HH:mm',
             },
             title: {
@@ -232,8 +218,7 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
   }
 
   populateDateOptions(): void {
-    // const startDate = new Date(2024, 0, 1); // January 1, 2024
-    const startDate = new Date(2023, 11, 0); 
+    const startDate = new Date(2024, 0, 1); // January 1, 2024
     const endDate = new Date(2024, 11, 31); // December 31, 2024
 
     while (startDate <= endDate) {
@@ -295,36 +280,7 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
     console.log("Imbalance Forecast Data \n",imbalanceForecastData)
 
     const labels = filteredProdForecastObj.map(item => item.Data);
-
-    const customSort = (arr) => {
-      const extractDateTime = (str) => {
-        const [dateStr, timeStr] = str.split(' ');
-        const [day, month, year] = dateStr.split('-').map(Number);
-        const [hour, minute] = timeStr.split(':').map(Number);
-        const timestamp = new Date(year, month - 1, day, hour, minute).getTime();
-        return timestamp;
-      };
-    
-      arr.sort((a, b) => {
-        const dateA = extractDateTime(a);
-        const dateB = extractDateTime(b);
-        return dateA - dateB;
-      });
-    
-      return arr;
-    };
-
-    // const labelsSorted = labels.sort((a, b) => {
-    //   const dateA = new Date(a).getTime();
-    //   const dateB = new Date(b).getTime();
-
-    //   return dateA - dateB;
-    // });
-
-    const labelsSorted = customSort(labels);
-
-    console.log("Labels",labels);
-    // console.log("Sorted Labels",labelsSorted);
+    const labelsSorted = this.customSort(labels);
 
     this.chart3 = new Chart(ctx3, {
       type: 'line',
