@@ -1,7 +1,7 @@
 .sidebar{
     flex: 1;
     min-height: 100vh;
-    /* background-color: #221E27; */
+    /* background-color: #201f1f1c; */
     background-color: #201f1f;
     border-color: #333;
     border-right: 0.5px solid #333;

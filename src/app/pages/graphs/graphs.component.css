@@ -1,7 +1,8 @@
 .graphs-page-container{
+    /* background-color: #201f1f1c; */
     background-color: #201f1f;
     color: rgb(156,156,156);
-    height: calc(100vh - 50px);
+    height: calc(100vh - 55px);
     width: 100%;
     margin-top: 50px;
     position: absolute;
