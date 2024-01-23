@@ -11,17 +11,31 @@
 
 
     <div class="value-boxes-container">
+            <div class="value-box">
+                <p>est. Potential energy for storing</p>
+                <div class="value-green">
+                    <span class="value-text">{{ potentialEnergySavedGW }}</span><span class="unit">GW</span>
+                </div>
+            </div>
+
+            <div class="value-box">
+                <p>est. Potential energy for stabilizing</p>
+                <div class="value-green">
+                    <span class="value-text">{{ potentialEnergyStoringGW }}</span><span class="unit">GW</span>
+                </div>
+            </div>
+
         <div class="value-box">
-            <p>est. Potential energy for storing</p>
+            <p>est. Loss from overproduction</p>
             <div class="value-red">
-                <span class="value-text">{{ potentialEnergySavedGW }}</span><span class="unit">GW</span>
+                <span>€</span><span class="value-text">{{ potentialDailyRevenue1 }}</span><span>m</span>
             </div>
         </div>
 
         <div class="value-box">
-            <p>est. Not sold</p>
-            <div class="value-green">
-                <span>€</span><span class="value-text">{{ potentialDailyRevenue }}</span><span>m</span>
+            <p>est. Loss from underproduction</p>
+            <div class="value-red">
+                <span>€</span><span class="value-text">{{ potentialDailyRevenue2 }}</span><span>m</span>
             </div>
         </div>
     </div>

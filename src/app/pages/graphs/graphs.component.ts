@@ -16,7 +16,9 @@ export class GraphsComponent implements AfterViewInit {
   chart2: any;
   energyReport: any;
   potentialEnergySavedGW: any;
-  potentialDailyRevenue: any;
+  potentialEnergyStoringGW: any;
+  potentialDailyRevenue1: any;
+  potentialDailyRevenue2: any;
   energyPrice: number = 0.2;
   currentDate: any;
 
@@ -53,8 +55,10 @@ export class GraphsComponent implements AfterViewInit {
     const productieData = filteredEnergyReportObj.map(item => parseInt(item.ProductieMW));
     const imbalanceData = filteredEnergyReportObj.map((item) => parseInt(item.ProductieMW) - parseInt(item.ConsumMW))
 
-    this.potentialEnergySavedGW = (imbalanceData.reduce((accumulator, currentValue) => accumulator + currentValue, 0)/1000).toFixed(2);
-    this.potentialDailyRevenue = (this.potentialEnergySavedGW * 1 * this.energyPrice).toFixed(2);
+    this.potentialEnergySavedGW = Math.abs(imbalanceData.filter(value => value >= 0).reduce((accumulator, currentValue) => accumulator + currentValue, 0)/1000).toFixed(2);
+    this.potentialEnergyStoringGW = Math.abs(imbalanceData.filter(value => value < 0).reduce((accumulator, currentValue) => accumulator + currentValue, 0)/1000).toFixed(2);
+    this.potentialDailyRevenue1 = -Math.abs(this.potentialEnergySavedGW * this.energyPrice).toFixed(2);
+    this.potentialDailyRevenue2 = -Math.abs(this.potentialEnergyStoringGW * this.energyPrice).toFixed(2);
     
     filteredEnergyReportObj.forEach(item => {
       item.Data = item.Data.replace(' ora', '');
