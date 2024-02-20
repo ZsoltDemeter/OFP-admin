@@ -74,11 +74,28 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
     return arr;
   };
 
+  sortByTime = (arr) => {
+      const convertToDate = dateString => {
+        const [dd, mm, yyyy, HH, MM] = dateString.match(/\d+/g).map(Number);
+        return new Date(yyyy, mm - 1, dd, HH, MM);
+    };
+
+    arr.sort((a, b) => convertToDate(a.Data).getTime() - convertToDate(b.Data).getTime());
+
+    return arr;
+  }
+
   createChart(): void {
 
     // const filteredEnergyReportObj = this.energyReport.filter(item => item.Data.includes(this.selectedDate));
     const filteredProdForecastObj = this.productionForecast.filter(item => item.Data.includes(this.selectedDate));
     const filteredConsForecastObj = this.consumptionForecast.filter(item => item.Data.includes(this.selectedDate));
+
+    // const prodForecastObjFiltered = this.sortByTime(filteredProdForecastObj)
+    // const consForecastObjFiltered = this.sortByTime(filteredConsForecastObj)
+
+    this.sortByTime(filteredProdForecastObj)
+    this.sortByTime(filteredConsForecastObj)
 
     // const productionData = filteredEnergyReportObj.map(item => parseInt(item.ProductieMW));
     // const consumptionData = filteredEnergyReportObj.map(item => parseInt(item.ConsumMW));
@@ -252,6 +269,9 @@ export class EnergyForecastingPageComponent implements AfterViewInit{
     // const filteredEnergyReportObj = this.energyReport.filter(item => item.Data.includes(this.selectedDate));
     const filteredProdForecastObj = this.productionForecast.filter(item => item.Data.includes(this.selectedDate));
     const filteredConsForecastObj = this.consumptionForecast.filter(item => item.Data.includes(this.selectedDate));
+
+    this.sortByTime(filteredProdForecastObj)
+    this.sortByTime(filteredConsForecastObj)
 
     // const productionData = filteredEnergyReportObj.map(item => parseInt(item.ProductieMW));
     // const consumptionData = filteredEnergyReportObj.map(item => parseInt(item.ConsumMW));
